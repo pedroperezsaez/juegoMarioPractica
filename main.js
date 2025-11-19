@@ -7,6 +7,7 @@ let playerImg=null;
 let scrollH=0;
 let scrollV=0;
 let framse=0;
+let playerDirection={};
 
 
 function getKeys(){
@@ -38,14 +39,24 @@ let player={
     height:50,
 
 }
-
+let marioIzqu={
+    posx:177,
+    posy:88
+}
+let marioDer={
+    posx:337,
+    posy:90,
+}
+playerDirection=marioIzqu;
 
 function update(){
 
 if(keys['ArrowLeft']){
+    playerDirection=marioIzqu;
     player.posx-=5
 }
 if(keys['ArrowRight']){
+    playerDirection=marioDer;
     player.posx+=5;
 }
 if(keys['ArrowUp']){
@@ -74,7 +85,7 @@ function draw(){
    ctx.drawImage(background,scrollH,scrollV,256,240,0,0, 256,240)
 
    //personaje
-    ctx.drawImage(playerImg, 55,89, 18,18, player.posx, player.posy, 18,18 )
+    ctx.drawImage(playerImg, playerDirection.posx, playerDirection.posy, 18,18, player.posx, player.posy, 18,18 )
    //ctx.beginPath();
     //ctx.rect(player.posx,player.posy,player.width,player.height);
     //ctx.fill();
