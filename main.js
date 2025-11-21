@@ -34,7 +34,7 @@ function loadImage(url){
 
 let player={
     posx:10,
-    posy:30,
+    posy:192,
     width:40,
     height:50,
 
@@ -52,6 +52,7 @@ playerDirection=marioIzqu;
 function update(){
 
 if(keys['ArrowLeft']){
+    
     playerDirection=marioIzqu;
     player.posx-=5
 }
