@@ -31,14 +31,18 @@ function loadImage(url){
         }
     })
 }
-
+let fondoJuego={
+    posicionY:256,
+    posicionX:240,
+}
 let player={
-    posx:10,
+    posx:fondoJuego.posicionX/2,
     posy:192,
     width:40,
     height:50,
-
+   
 }
+
 let marioIzqu={
     posx:177,
     posy:88
@@ -58,7 +62,8 @@ if(keys['ArrowLeft']){
 }
 if(keys['ArrowRight']){
     playerDirection=marioDer;
-    player.posx+=5;
+    /*player.posx+=1;*/
+    scrollH+=1
 }
 if(keys['ArrowUp']){
     player.posy-=5
@@ -83,7 +88,7 @@ if(keys['a']){
 
 function draw(){
     //esto es el fondo
-   ctx.drawImage(background,scrollH,scrollV,256,240,0,0, 256,240)
+   ctx.drawImage(background,scrollH,scrollV,fondoJuego.posicionY,fondoJuego.posicionX,0,0, fondoJuego.posicionY,fondoJuego.posicionX)
 
    //personaje
     ctx.drawImage(playerImg, playerDirection.posx, playerDirection.posy, 18,18, player.posx, player.posy, 18,18 )
@@ -93,7 +98,7 @@ function draw(){
 }
 function mainLoop(){
     frames++;
-    //Actualitzar el mon (entitats, controls...)
+    //Actualitzar el mon (entitats, controls..)
     update();
     //Dibuixar els elements dle joc
     ctx.save()
