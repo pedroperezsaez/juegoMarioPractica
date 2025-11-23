@@ -6,9 +6,13 @@ let background=null;
 let playerImg=null;
 let scrollH=0;
 let scrollV=0;
-let framse=0;
+let frames=0;
 let playerDirection={};
-
+let velocidadCanvas={};
+let animacion=0;
+let playerPositionY=192;
+let saltando=false;
+let saltoAltura=0;
 
 function getKeys(){
     let keys={};
@@ -43,36 +47,107 @@ let player={
    
 }
 
+
+
+ 
+
 let marioIzqu={
     posx:177,
     posy:88
 }
 let marioDer={
-    posx:337,
-    posy:90,
+    posx:216,
+    posy:88,
 }
-playerDirection=marioIzqu;
+let marioCaminandoDer={
+    posx:255,
+    posy:88,
+}
+let marioCaminandoIzq={
+ posx:134,
+    posy:88,
+};
+playerDirection=marioDer;
+
+function marioMovimientoDer(){    
+    if(animacion<10){
+        playerDirection=marioDer;
+      
+    }else if(animacion>=10 && animacion<20){
+        playerDirection=marioCaminandoDer;
+    }else{
+        animacion=0;
+    }
+}
+
+function marioMovimientoIzq(){
+    
+    if(animacion<10){
+        playerDirection=marioIzqu;
+      
+    }else if(animacion>=10 && animacion<20){
+        playerDirection=marioCaminandoIzq;
+    }else{
+        animacion=0;
+    }
+}
+
+function salto(){
+        if(!saltando){
+            saltando= true;
+            saltoAltura=-5;
+
+        }
+        
+    }
+    //tengo que seguir mirando aqui
+    let alturaMaximaDeSalto = 100;
+    function saltoYBajada(){       
+         player.posy=player.posy+saltoAltura;
+        console.log(player.posy)
+
+        if(player.posy<=alturaMaximaDeSalto){ 
+             player.posy = playerPositionY;
+            saltando = false;
+            saltoAltura = 0;
+        }   
+        
+        
+    }
+  
+
+
+
+function pararArrancarCanvas() {
+    if (((player.posx) - (fondoJuego.posicionX / 2))<0) {
+       player.posx+=1
+    } else {
+        scrollH += 1;   
+    }
+}
+
 
 function update(){
 
 if(keys['ArrowLeft']){
-    
-    playerDirection=marioIzqu;
-    player.posx-=5
+   marioMovimientoIzq();
+   player.posx-=1;
 }
+
 if(keys['ArrowRight']){
-    playerDirection=marioDer;
-    /*player.posx+=1;*/
-    scrollH+=1
+   marioMovimientoDer()
+ pararArrancarCanvas();
 }
 if(keys['ArrowUp']){
-    player.posy-=5
+    salto();
+   
+    
 }
 if(keys['ArrowDown']){
     player.posy+=5
 }
 if(keys['z']){
-    scrollH-=2
+    velocidadCanvas.izquierda;
 }
 if(keys['x']){
     scrollH+=2
@@ -97,6 +172,8 @@ function draw(){
     //ctx.fill();
 }
 function mainLoop(){
+    saltoYBajada()
+   animacion++;
     frames++;
     //Actualitzar el mon (entitats, controls..)
     update();
