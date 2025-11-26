@@ -136,9 +136,10 @@ function saltoYBajada() {
 
 function pararArrancarCanvas() {
     if (((player.posx) - (fondoJuego.posicionX / 2)) < 0) {
-        player.posx += 1
+        player.posx += 3
     } else {
-        scrollH += 1;
+        scrollH += 2;
+        player.posx+=2
     }
 }
 function collisions(){
@@ -176,28 +177,25 @@ if(collisions()){
         
        
     }
-    if (keys['ArrowUp']) {
-        /*salto();
-        */
-       player.posy=player.posy-2;
-       if (player.onground){
-        player.vy =-6.4
-        player.onground=false
-       }
-
-       if(!player.onground){
-        player.vy+=0.3
-       }
-       player.posy+=player.vy;
-
-       if(player.posy >= 192){
-        player.posy=192
-        player.onground=true
-        player.vy=0
-       }
-
-
+   if (keys['ArrowUp']) {
+    if (player.onground) {
+        player.vy = -6.4;   
+        player.onground = false;
     }
+}
+
+if (!player.onground) {
+    player.vy += 0.3;      
+}
+
+player.posy += player.vy;
+
+
+if (player.posy >= 192) {
+    player.posy = 192;
+    player.onground = true;
+    player.vy = 0;
+}
     
     if (keys['z']) {
         velocidadCanvas.izquierda;
