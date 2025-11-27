@@ -20,6 +20,7 @@ let collision_object={
     h:209-175,
 }
 
+
 function getKeys() {
     let keys = {};
     window.onkeydown = function (e) {
@@ -46,7 +47,7 @@ let fondoJuego = {
     posicionX: 240,
 }
 let player = {
-    posx: fondoJuego.posicionX / 2,
+    posx: fondoJuego.posicionX/2,
     posy: 192,
     width: 18,
     height:18,
@@ -59,7 +60,29 @@ let player = {
 
 
 
+let camera = {
+    x: 0,
+    y: 0,
+    width: fondoJuego.posicionX/2,   
+    height: fondoJuego.posicionY,   
+};
 
+
+
+function updateCamera() {
+    let margen = 30;
+
+    
+    if (player.posx - camera.x > camera.width - margen) {
+        camera.x = player.posx - (camera.width - margen);
+    }
+    if (player.posx - camera.x < margen) {
+        camera.x = player.posx - margen;
+    }
+
+     
+   
+}
 
 let marioIzqu = {
     posx: 177,
@@ -105,6 +128,7 @@ function marioMovimientoIzq() {
         animacion = 0;
     }
     
+    
 }
 
 /*function salto() {
@@ -134,7 +158,7 @@ function saltoYBajada() {
 
 
 
-function pararArrancarCanvas() {
+/*function pararArrancarCanvas() {
     if (((player.posx) - (fondoJuego.posicionX / 2)) < 0) {
         player.posx += 3
     } else {
@@ -142,6 +166,7 @@ function pararArrancarCanvas() {
         player.posx+=2
     }
 }
+    */
 function collisions(){
 let xmina = player.posx
 let xmaxa = xmina + player.width
@@ -157,7 +182,7 @@ return true;
 }
 
 function update() {
-
+updateCamera();
 if(collisions()){
     console.log("colision")
    player.posx= collision_object.x - player.width-0.1
@@ -173,7 +198,8 @@ if(collisions()){
     if (keys['ArrowRight']) {
         player.dir = 'R'
         marioMovimientoDer()
-        pararArrancarCanvas();
+        player.posx += 2;
+        //pararArrancarCanvas();
         
        
     }
@@ -197,31 +223,28 @@ if (player.posy >= 192) {
     player.vy = 0;
 }
     
-    if (keys['z']) {
-        velocidadCanvas.izquierda;
-    }
-    if (keys['x']) {
-        scrollH += 2
-    }
-    if (keys['q']) {
-        scrollV -= 2
-    }
-    if (keys['a']) {
-        scrollV += 2
-    }
+   
 
 }
 
 function draw() {
-    //esto es el fondo
-  
-    ctx.drawImage(background, scrollH, scrollV, fondoJuego.posicionY, fondoJuego.posicionX, 0, 0, fondoJuego.posicionY, fondoJuego.posicionX)
+   //fondo
+  ctx.drawImage(
+        background,
+        camera.x, camera.y, canvas.width, canvas.height, 
+        0, 0, canvas.width, canvas.height               
+    );
 
-    //personaje
-    ctx.drawImage(playerImg, playerDirection.posx, playerDirection.posy, 18, 18, player.posx, player.posy, 18, 18)
+    //jugador
+    ctx.drawImage(
+        playerImg,
+        playerDirection.posx, playerDirection.posy, 18, 18,
+        player.posx - camera.x, player.posy - camera.y, 18, 18
+    );
     //ctx.beginPath();
     //ctx.rect(player.posx,player.posy,player.width,player.height);
     //ctx.fill();
+    
     
 }
 
