@@ -13,12 +13,6 @@ let animacion = 0;
 let playerPositionY = 192;
 let saltando = false;
 let saltoAltura = 0;
-let collision_object={
-    x: 447,
-    y:175,
-    w:480-447,
-    h:209-175,
-}
 
 
 function getKeys() {
@@ -47,8 +41,10 @@ let fondoJuego = {
     posicionX: 240,
 }
 let player = {
-    posx: fondoJuego.posicionX/2,
-    posy: 192,
+    //posx: fondoJuego.posicionX/2,
+    //posy: 192,
+    posx : 789,
+       posy : 443,
     width: 18,
     height:18,
    
@@ -70,20 +66,27 @@ let camera = {
 
 
 function updateCamera() {
-    let margen = 30;
-
+    let margenX = 30;
+    let margenY = 60; 
     
-    if (player.posx - camera.x > camera.width - margen) {
-        camera.x = player.posx - (camera.width - margen);
+   
+    if (player.posx - camera.x > camera.width - margenX) {
+        camera.x = player.posx - (camera.width - margenX);
     }
-    if (player.posx - camera.x < margen) {
-        camera.x = player.posx - margen;
+    if (player.posx - camera.x < margenX) {
+        camera.x = player.posx - margenX;
     }
-
-     
+    
+   
+    if (player.posy - camera.y > camera.height - margenY) {
+        camera.y = player.posy - (camera.height - margenY);
+    }
+    if (player.posy - camera.y < margenY) {
+        camera.y = player.posy - margenY;
+    }
+    
    
 }
-
 let marioIzqu = {
     posx: 177,
     posy: 88
@@ -167,69 +170,100 @@ function saltoYBajada() {
     }
 }
     */
-function collisions(){
-let xmina = player.posx
-let xmaxa = xmina + player.width
-let ymina=player.posy
-let ymaxa=ymina+player.height
-let xminb=collision_object.x
-let xmaxb= xminb+collision_object.w
-let yminb= collision_object.y
-let ymaxb= yminb+collision_object.h
-if(ymaxa<yminb ||ymaxb < ymina) return false;
-if(xmaxa < xminb || xmaxb< xmina) return false;
-return true;
-}
+function hayChoque(mario, bloque) {
+    
+    const choqueHorizontal = 
+        mario.posx < bloque.x + bloque.width && 
+        mario.posx + mario.width > bloque.x;  
 
+   
+    const choqueVertical = 
+        mario.posy < bloque.y + bloque.height && 
+        mario.posy + mario.height > bloque.y;   
+
+   
+    return choqueHorizontal && choqueVertical;
+}
 function update() {
-updateCamera();
-if(collisions()){
-    console.log("colision")
-   player.posx= collision_object.x - player.width-0.1
-}
+    final();
+    tunelSuperficie();
+    tunelSubsuelo();
+    
+    let posicionAnteriorX = player.posx;
 
-    player.dir = 'Q'
     if (keys['ArrowLeft']) {
-        player.dir = 'L'
+        player.posx -= 2;
         marioMovimientoIzq();
-        player.posx -= 1;
+    }
+    if (keys['ArrowRight']) {
+        player.posx += 2;
+        marioMovimientoDer();
+    }
+//mira
+    for (let i = 0; i < listaDeBloques.length; i++) {
+    let bloque = listaDeBloques[i];
+
+        if (hayChoque(player, bloque)) {
+           
+            player.posx = posicionAnteriorX;
+        }
     }
 
-    if (keys['ArrowRight']) {
-        player.dir = 'R'
-        marioMovimientoDer()
-        player.posx += 2;
-        //pararArrancarCanvas();
-        
-       
-    }
-   if (keys['ArrowUp']) {
-    if (player.onground) {
-        player.vy = -6.4;   
+   
+    if (keys['ArrowUp'] && player.onground) {
+        player.vy = -7; // salto
         player.onground = false;
     }
-}
 
-if (!player.onground) {
-    player.vy += 0.3;      
-}
+    player.vy += 0.3; //gravedad
+    player.posy += player.vy;
 
-player.posy += player.vy;
-
-
-if (player.posy >= 192) {
-    player.posy = 192;
-    player.onground = true;
-    player.vy = 0;
-}
-    
    
+   for (let i = 0; i < listaDeBloques.length; i++) {
+    let bloque = listaDeBloques[i];
+        if (hayChoque(player, bloque)) {
+            
+            if (player.vy > 0) {
+                player.posy = bloque.y - player.height;
+                player.vy = 0;
+                player.onground = true;
+            } 
+           
+            else if (player.vy < 0) {
+                player.posy = bloque.y + bloque.height;
+                player.vy = 0;
+            }
+        }
+    }
+
+    
+  
+
+    updateCamera();
+}
+function tunelSuperficie(){
+  if (keys['ArrowDown'] && player.posx >= 910 && player.posx <= 942) {
+        player.posx = 789;
+        player.posy = 443;
+}}
+function tunelSubsuelo() {
+   
+    if (keys['ArrowRight'] && 
+        player.posx >= 955 && player.posx <= 975 && 
+        player.posy >= 416 && player.posy <= 447) {
+        player.posx = 2619;
+        player.posy = 173;
+    }
 
 }
-
+function final(){
+      if (player.posx >= 3167) {
+        juegoTerminado = true;
+      }
+}
 function draw() {
-   //fondo
-  ctx.drawImage(
+    //fondo
+    ctx.drawImage(
         background,
         camera.x, camera.y, canvas.width, canvas.height, 
         0, 0, canvas.width, canvas.height               
@@ -241,11 +275,18 @@ function draw() {
         playerDirection.posx, playerDirection.posy, 18, 18,
         player.posx - camera.x, player.posy - camera.y, 18, 18
     );
-    //ctx.beginPath();
-    //ctx.rect(player.posx,player.posy,player.width,player.height);
-    //ctx.fill();
     
-    
+ 
+   if (player.posx >= 3167) {
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+       
+        const x = (canvas.width / 2.5) / 2;  
+        const y = (canvas.height / 2.5) / 2;
+        ctx.fillText("Has ganado", x, y);
+    }
+
 }
 
 const FRAMETIME = 16;
@@ -280,13 +321,19 @@ function mainLoop(timestamp) {
     requestAnimationFrame(mainLoop);
 }
 
+let listaDeBloques = []; 
+
 async function main() {
-    // inicialitzacions
-    background = await loadImage('imgs/bg-1-1.png')
-    playerImg = await loadImage('imgs/mario.png')
+    background = await loadImage('imgs/bg-1-1.png');
+    playerImg = await loadImage('imgs/mario.png');
 
-    //bucl principal(60fps)
-    mainLoop()
+   
+    let respuesta = await fetch('colisiones.json');
+    let datosCargados = await respuesta.json();
+
+  
+    listaDeBloques = datosCargados.layers[1].objects;
+
+    mainLoop();
 }
-
 main();
