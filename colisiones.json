@@ -1,19 +1,31 @@
-{ 
+{ "compressionlevel":-1,
+ "height":38,
+ "infinite":false,
  "layers":[
-        {
-         
-         "height":38,
-         "id":1,
-         "name":"Capa de patrones 1",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":220,
-         "x":0,
-         "y":0
-        }, 
+        
         {
          "draworder":"topdown",
+         "id":5,
+         "name":"enemigos",
+         "objects":[
+                {
+                 "height":16,
+                 "id":90,
+                 "name":"enemigo",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":1504,
+                 "y":192
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, {
+        "draworder":"topdown",
          "id":2,
          "name":"colisiones",
          "objects":[
@@ -38,17 +50,6 @@
                  "width":240,
                  "x":1136,
                  "y":207.913043478261
-                }, 
-                {
-                 "height":32.015625,
-                 "id":3,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1952,
-                 "x":1424,
-                 "y":207.984375
                 }, 
                 {
                  "height":16.1875,
@@ -689,17 +690,6 @@
                  "y":192
                 }, 
                 {
-                 "height":176,
-                 "id":79,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":80,
-                 "y":32
-                }, 
-                {
                  "height":32,
                  "id":80,
                  "name":"",
@@ -797,26 +787,44 @@
                  "width":32.25,
                  "x":447.875,
                  "y":175.63
+                }, 
+                {
+                 "height":32,
+                 "id":92,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1024,
+                 "x":1424,
+                 "y":208
+                }, 
+                {
+                 "height":32,
+                 "id":93,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":896,
+                 "x":2480,
+                 "y":208
+                }, 
+                {
+                 "height":176,
+                 "id":94,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":144,
+                 "y":32
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
-        }],
- "nextlayerid":3,
- "nextobjectid":90,
- "orientation":"orthogonal",
- "renderorder":"right-down",
- "tiledversion":"1.11.2",
- "tileheight":16,
- "tilesets":[
-        {
-         "firstgid":1,
-         "source":"colisiones\/colisionesmario.tsx"
-        }],
- "tilewidth":16,
- "type":"map",
- "version":"1.10",
- "width":220
+        }]
 }
