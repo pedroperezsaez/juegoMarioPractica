@@ -46,7 +46,7 @@ let fondoJuego = {
 };
 
 let player = {
-  posx: 200,
+  posx: 1300,
   posy: 192,
   //posx: 1300,
   width: 18,
@@ -152,13 +152,26 @@ let enemigo = {
   finX: 2065,
 };
 
-function estaColisionandoJugadorConEnemigo(jugador, enemigo) {
-  return (
-    jugador.posx < enemigo.posx + enemigo.width &&
-    jugador.posx + jugador.width > enemigo.posx &&
-    jugador.posy < enemigo.posy + enemigo.height &&
-    jugador.posy + jugador.height > enemigo.posy
-  );
+function estaColisionandoJugadorConEnemigo(player, enemigo) {
+
+  const jugadorIzq = player.posx;
+  const jugadorDer = player.posx + player.width;
+  const jugadorArr = player.posy;
+  const jugadorAbj = player.posy + player.height;
+
+  const enemigoIzq = enemigo.posx;
+  const enemigoDer = enemigo.posx + enemigo.width;
+  const enemigoArr = enemigo.posy;
+  const enemigoAbj = enemigo.posy + enemigo.height;
+
+  
+  if (jugadorAbj < enemigoArr) return false;
+  if (enemigoAbj < jugadorArr) return false;
+  if (jugadorDer < enemigoIzq) return false;
+  if (enemigoDer < jugadorIzq) return false;
+
+  
+  return true;
 }
 
 let enemigoIzquierda = { posx: 115, posy: 39 };
