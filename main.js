@@ -46,7 +46,7 @@ let fondoJuego = {
 };
 
 let player = {
-  posx: 1300,
+  posx: 200,
   posy: 192,
   //posx: 1300,
   width: 18,
